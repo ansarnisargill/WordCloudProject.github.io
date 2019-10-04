@@ -1,35 +1,44 @@
-anychart.onDocumentReady(function() {
-    var data = [
-      {"x": "Mandarin chinese", "value": 1090000000, category: "Sino-Tibetan"},
-      {"x": "English", "value": 983000000, category: "Indo-European"},
-      {"x": "Hindustani", "value": 544000000, category: "Indo-European"},
-      {"x": "Spanish", "value": 527000000, category: "Indo-European"},
-      {"x": "Arabic", "value": 422000000, category: "Afro-Asiatic"},
-      {"x": "Malay", "value": 281000000, category: "Austronesian"},
-      {"x": "Russian", "value": 267000000, category: "Indo-European"},
-      {"x": "Bengali", "value": 261000000, category: "Indo-European"},
-      {"x": "Portuguese", "value": 229000000, category: "Indo-European"},
-      {"x": "French", "value": 229000000, category: "Indo-European"},
-      {"x": "Hausa", "value": 150000000, category: "Afro-Asiatic"},
-      {"x": "Punjabi", "value": 148000000, category: "Indo-European"},
-      {"x": "Japanese", "value": 129000000, category: "Japonic"},
-      {"x": "German", "value": 129000000, category: "Indo-European"},
-      {"x": "Persian", "value": 121000000, category: "Indo-European"}
-    ];
-  
-   // create a tag (word) cloud chart
-    var chart = anychart.tagCloud(data);
-  
-     // set a chart title
-    chart.title('15 most spoken languages')
-    // set an array of angles at which the words will be laid out
-    chart.angles([0])
-    // enable a color range
-    chart.colorRange(true);
-    // set the color range length
-    chart.colorRange().length('80%');
-  
-    // display the word cloud chart
-    chart.container("container");
-    chart.draw();
-  });
+$(document).ready(function() {
+
+  var
+    words = $('#tagi text'),
+    l = words.length,
+    current = null,
+    delay = 2000;
+
+  function clearBlink(o) {
+    var
+      ca = o.getAttribute('class').split(' '),
+      i = ca.indexOf('blink');
+
+    if (i !== -1) {
+      ca.splice(i, 1);
+      o.setAttribute('class', ca.join(' '));
+    }
+  }
+
+  function addBlink(o) {
+    var
+      ca = o.getAttribute('class').split(' ');
+    ca.push('blink');
+    o.setAttribute('class', ca.join(' '));
+  }
+
+  function wordblink() {
+
+    var e;
+
+    if (current !== null) {
+      clearBlink(words.eq(current)[0])
+    }
+
+    current = Math.floor(Math.random() * l);
+    e = words.eq(current);
+    addBlink(e[0]);
+
+    setTimeout(wordblink, delay);
+  }
+
+  wordblink();
+
+});
